@@ -103,12 +103,12 @@ int *intersection(int *firstArray, int lenOfTheFirstArray, int *secondArray, int
     return intersectionArray;
 }
 
-int *unification(int *firstArray, int lenOfTheFirstArray, int *secondArray, int lenOfTheSecondArray, int *lenOfUnificationArray)
+int *unionArrayFunc(int *firstArray, int lenOfTheFirstArray, int *secondArray, int lenOfTheSecondArray, int *lenOfunionArray)
 {
-    int firstPointer = 0, secondPointer = 0, unificationArrayPointer = 0;
+    int firstPointer = 0, secondPointer = 0, unionArrayPointer = 0;
     int sumLen = lenOfTheFirstArray + lenOfTheSecondArray;
-    int *unificationArray = calloc(sumLen, sizeof(int));
-    if (unificationArray == NULL)
+    int *unionArray = calloc(sumLen, sizeof(int));
+    if (unionArray == NULL)
     {
         return NULL;
     }
@@ -116,21 +116,21 @@ int *unification(int *firstArray, int lenOfTheFirstArray, int *secondArray, int 
     {
         if (firstArray[firstPointer] == secondArray[secondPointer])
         {
-            unificationArray[unificationArrayPointer] = firstArray[firstPointer];
-            unificationArrayPointer++;
+            unionArray[unionArrayPointer] = firstArray[firstPointer];
+            unionArrayPointer++;
             firstPointer++;
             secondPointer++;
         }
         else if (firstArray[firstPointer] < secondArray[secondPointer])
         {
-            unificationArray[unificationArrayPointer] = firstArray[firstPointer];
-            unificationArrayPointer++;
+            unionArray[unionArrayPointer] = firstArray[firstPointer];
+            unionArrayPointer++;
             firstPointer++;
         }
         else
         {
-            unificationArray[unificationArrayPointer] = secondArray[secondPointer];
-            unificationArrayPointer++;
+            unionArray[unionArrayPointer] = secondArray[secondPointer];
+            unionArrayPointer++;
             secondPointer++;
         }
     }
@@ -138,20 +138,20 @@ int *unification(int *firstArray, int lenOfTheFirstArray, int *secondArray, int 
     {
         for (int i = secondPointer; i < lenOfTheSecondArray; ++i)
         {
-            unificationArray[unificationArrayPointer] = secondArray[i];
-            unificationArrayPointer++;
+            unionArray[unionArrayPointer] = secondArray[i];
+            unionArrayPointer++;
         }
     }
     else if (secondPointer == lenOfTheSecondArray)
     {
         for (int i = firstPointer; i < lenOfTheFirstArray; ++i)
         {
-            unificationArray[unificationArrayPointer] = firstArray[i];
-            unificationArrayPointer++;
+            unionArray[unionArrayPointer] = firstArray[i];
+            unionArrayPointer++;
         }
     }
-    *lenOfUnificationArray = unificationArrayPointer;
-    return unificationArray;
+    *lenOfunionArray = unionArrayPointer;
+    return unionArray;
 }
 
 int *difference(int *firstArray, int lenOfTheFirstArray, int *secondArray, int lenOfTheSecondArray, int *lenOfTheDifference)
@@ -219,11 +219,11 @@ int main()
         return 0;
     }
     char firstFileName[] = "firstFile.txt", secondFileName[] = "secondFile.txt",
-        intersectionFileName[] = "intersection.txt", unificationFileName[] = "unification.txt",
+        intersectionFileName[] = "intersection.txt", unionFileName[] = "union.txt",
         symmDiffFileName[] = "symmetricDifference.txt", onlyInTheFirstFile[] = "onlyInTheFirstFile.txt";
 
     int lengthOfFirstFile = 0, lengthOfSecondFile = 0,
-        lengthOfUnificationArray = 0,lengthOfIntersectionArray = 0,
+        lengthOfunionArray = 0,lengthOfIntersectionArray = 0,
         lengthOfSymmetricDifferenceArray = 0, lenOfOnlyInFirstArray = 0;
 
     int *arrayOfFirstFileNumbers = readFromFile(firstFileName, &lengthOfFirstFile);
@@ -233,19 +233,19 @@ int main()
     quickSort(arrayOfSecondFileNumbers, lengthOfSecondFile);
 
     int *intersectionArray = intersection(arrayOfFirstFileNumbers, lengthOfFirstFile,arrayOfSecondFileNumbers, lengthOfSecondFile, &lengthOfIntersectionArray);
-    int *unificationArray = unification(arrayOfFirstFileNumbers, lengthOfFirstFile,arrayOfSecondFileNumbers, lengthOfSecondFile, &lengthOfUnificationArray);
-    int *symmDiffArray = difference(unificationArray, lengthOfUnificationArray, intersectionArray, lengthOfIntersectionArray, &lengthOfSymmetricDifferenceArray);
+    int *unionArray = unionArrayFunc(arrayOfFirstFileNumbers, lengthOfFirstFile,arrayOfSecondFileNumbers, lengthOfSecondFile, &lengthOfunionArray);
+    int *symmDiffArray = difference(unionArray, lengthOfunionArray, intersectionArray, lengthOfIntersectionArray, &lengthOfSymmetricDifferenceArray);
     int *onlyInFirstArray = difference(arrayOfFirstFileNumbers, lengthOfFirstFile,arrayOfSecondFileNumbers, lengthOfSecondFile, &lenOfOnlyInFirstArray);
 
     arrayToFile(intersectionArray, lengthOfIntersectionArray, intersectionFileName);
-    arrayToFile(unificationArray, lengthOfUnificationArray, unificationFileName);
+    arrayToFile(unionArray, lengthOfunionArray, unionFileName);
     arrayToFile(symmDiffArray, lengthOfSymmetricDifferenceArray, symmDiffFileName);
     arrayToFile(onlyInFirstArray, lenOfOnlyInFirstArray, onlyInTheFirstFile);
 
     free(arrayOfFirstFileNumbers);
     free(arrayOfSecondFileNumbers);
     free(intersectionArray);
-    free(unificationArray);
+    free(unionArray);
     free(symmDiffArray);
     free(onlyInFirstArray);
 
