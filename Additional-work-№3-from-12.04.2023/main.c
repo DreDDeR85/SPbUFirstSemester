@@ -23,7 +23,7 @@ int main()
     }
     else
     {
-        printf("Unfortunately, bot this two-linked list is not symmetric.\n");
+        printf("Unfortunately, but this two-linked list is not symmetric.\n");
     }
     clearTwoLinkedList(twoLinkedList);
     return 0;
