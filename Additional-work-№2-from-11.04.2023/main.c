@@ -68,8 +68,15 @@ void quickSort(int *array, int lenOfArray)
 
 int *intersection(int *firstArray, int lenOfTheFirstArray, int *secondArray, int lenOfTheSecondArray, int *lenOfIntersectionArray)
 {
-    int firstPointer = 0, secondPointer = 0, interArrayPointer = 0;
-    int maxLen = lenOfTheFirstArray * (lenOfTheFirstArray >= lenOfTheSecondArray) + lenOfTheSecondArray * (lenOfTheSecondArray > lenOfTheFirstArray);
+    int firstPointer = 0, secondPointer = 0, interArrayPointer = 0, maxLen = 0;
+    if (lenOfTheFirstArray >= lenOfTheSecondArray)
+    {
+        maxLen = lenOfTheFirstArray;
+    }
+    else
+    {
+        maxLen = lenOfTheSecondArray;
+    }
     int *intersectionArray = calloc(maxLen, sizeof(int));
     if (intersectionArray == NULL)
     {
@@ -98,37 +105,52 @@ int *intersection(int *firstArray, int lenOfTheFirstArray, int *secondArray, int
 
 int *unification(int *firstArray, int lenOfTheFirstArray, int *secondArray, int lenOfTheSecondArray, int *lenOfUnificationArray)
 {
-    int secondPointer = 0, unificationArrayPointer = 0;
-    int maxLen = lenOfTheFirstArray + lenOfTheSecondArray;
-    int *unificationArray = calloc(maxLen, sizeof(int));
+    int firstPointer = 0, secondPointer = 0, unificationArrayPointer = 0;
+    int sumLen = lenOfTheFirstArray + lenOfTheSecondArray;
+    int *unificationArray = calloc(sumLen, sizeof(int));
     if (unificationArray == NULL)
     {
         return NULL;
     }
-    for (int i = 0; i < lenOfTheFirstArray; ++i)
+    while (firstPointer != lenOfTheFirstArray && secondPointer != lenOfTheSecondArray)
     {
-        unificationArray[i] = firstArray[i];
-    }
-    *lenOfUnificationArray = lenOfTheFirstArray;
-    quickSort(unificationArray, *lenOfUnificationArray);
-    while (secondPointer != lenOfTheSecondArray && unificationArrayPointer != maxLen)
-    {
-        if ((unificationArray[unificationArrayPointer] < secondArray[secondPointer]) && (unificationArray[unificationArrayPointer] != '\0'))
+        if (firstArray[firstPointer] == secondArray[secondPointer])
         {
+            unificationArray[unificationArrayPointer] = firstArray[firstPointer];
             unificationArrayPointer++;
-        }
-        else if (unificationArray[unificationArrayPointer] == secondArray[secondPointer])
-        {
+            firstPointer++;
             secondPointer++;
+        }
+        else if (firstArray[firstPointer] < secondArray[secondPointer])
+        {
+            unificationArray[unificationArrayPointer] = firstArray[firstPointer];
+            unificationArrayPointer++;
+            firstPointer++;
         }
         else
         {
-            unificationArray[*lenOfUnificationArray] = secondArray[secondPointer];
-            *lenOfUnificationArray += 1;
+            unificationArray[unificationArrayPointer] = secondArray[secondPointer];
+            unificationArrayPointer++;
             secondPointer++;
         }
     }
-    quickSort(unificationArray, *lenOfUnificationArray);
+    if (firstPointer == lenOfTheFirstArray)
+    {
+        for (int i = secondPointer; i < lenOfTheSecondArray; ++i)
+        {
+            unificationArray[unificationArrayPointer] = secondArray[i];
+            unificationArrayPointer++;
+        }
+    }
+    else if (secondPointer == lenOfTheSecondArray)
+    {
+        for (int i = firstPointer; i < lenOfTheFirstArray; ++i)
+        {
+            unificationArray[unificationArrayPointer] = firstArray[i];
+            unificationArrayPointer++;
+        }
+    }
+    *lenOfUnificationArray = unificationArrayPointer;
     return unificationArray;
 }
 
