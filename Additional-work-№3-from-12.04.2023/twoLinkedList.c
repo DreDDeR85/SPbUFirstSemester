@@ -17,6 +17,10 @@ struct TwoLinkedList
 TwoLinkedList *creatingTwoLinkedList()
 {
     TwoLinkedList *twoLinkedList = calloc(1, sizeof(TwoLinkedList));
+    if (twoLinkedList == NULL)
+    {
+        return NULL;
+    }
     twoLinkedList->right = NULL;
     twoLinkedList->left = NULL;
     twoLinkedList->size = 0;
@@ -33,6 +37,10 @@ int addingElement(TwoLinkedList *twoLinkedList, int value)
     if (rightHead == NULL)
     {
         rightHead = calloc(1, sizeof(Unit));
+        if (rightHead == NULL)
+        {
+            return -1;
+        }
         rightHead->value = value;
         rightHead->prev = NULL;
         rightHead->next = NULL;
@@ -43,6 +51,10 @@ int addingElement(TwoLinkedList *twoLinkedList, int value)
     else
     {
         Unit *newUnit = calloc(1, sizeof(Unit));
+        if (newUnit == NULL)
+        {
+            return -1;
+        }
         newUnit->prev = rightHead;
         newUnit->next = NULL;
         newUnit->value = value;
@@ -99,7 +111,15 @@ bool isTwoLinkedListSymmetric(TwoLinkedList *twoLinkedList)
 
 void printTwoLinkedList(TwoLinkedList *twoLinkedList)
 {
+    if (twoLinkedList == NULL)
+    {
+        return;
+    }
     Unit *helpUnit = twoLinkedList->left;
+    if (helpUnit == NULL)
+    {
+        return;
+    }
     for (int i = 0; i < twoLinkedList->size; ++i)
     {
         printf("%d ", helpUnit->value);
