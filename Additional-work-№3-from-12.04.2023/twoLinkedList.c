@@ -105,6 +105,8 @@ bool isTwoLinkedListSymmetric(TwoLinkedList *twoLinkedList)
         {
             return false;
         }
+        leftPointer = leftPointer->next;
+        rightPointer = rightPointer->prev;
     }
     return true;
 }
